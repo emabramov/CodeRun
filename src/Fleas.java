@@ -1,7 +1,7 @@
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLOutput;
+import java.util.Scanner;
 
 /*
 В первой строке входного файла находится 5 чисел, разделенных пробелом: N, M, S, T, Q.
@@ -15,21 +15,39 @@ public class Fleas {
     public static void main(String[] args) throws IOException {
         File input = new File("CodeRunYandex/resources/flea.txt");
 
-
-        BufferedReader reader = new BufferedReader(new FileReader(input));
-        String line  = reader.readLine();
-        line = line.replace(" ", "");
-
+        Scanner scanner = new Scanner(input);
+        HorseStep step = new HorseStep();
 
         int n, m, s, t, q;
-        n = Integer.parseInt(String.valueOf(line.charAt(0)));
-        m = Integer.parseInt(String.valueOf(line.charAt(1)));
-        s = Integer.parseInt(String.valueOf(line.charAt(2)));
-        t = Integer.parseInt(String.valueOf(line.charAt(3)));
-        q = Integer.parseInt(String.valueOf(line.charAt(4)));
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        s = scanner.nextInt();
+        t = scanner.nextInt();
+        q = scanner.nextInt();
 
         int[][] matrix = new int[n + 1][m + 1];
 
         
+    }
+}
+
+class HorseStep{
+    public int[][] getSteps() {
+        return steps;
+    }
+
+    private int[][] steps = {
+            {-2, -1},
+            {-2, 1},
+            {-1, -2},
+            {-1, 2},
+            {1, -2},
+            {1, 2},
+            {2, -1},
+            {2, 1}
+    };
+
+    public HorseStep(){
+        this.steps = getSteps();
     }
 }
