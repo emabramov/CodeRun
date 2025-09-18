@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -17,7 +16,6 @@ public class Fleas {
         File input = new File("CodeRunYandex/resources/flea.txt");
 
         Scanner scanner = new Scanner(input);
-        HorseStep steps = new HorseStep();
 
         int n, m, s, t, q;
         n = scanner.nextInt();
@@ -26,58 +24,37 @@ public class Fleas {
         t = scanner.nextInt();
         q = scanner.nextInt();
 
-        int[][] matrix = new int[n + 1][m + 1];
+        int[][] matrix = new int[n + 1][m + 1], distances = new int[n + 1][m + 1], visited = new int[n + 1][m + 1];
         int[] feedPoint = new int[2];
         feedPoint[0] = s;
         feedPoint[1] = t;
         int fleaCount = q;
-        List<FleaPos> fleaPosList = new ArrayList<>();
-        for (int i = 0; i < fleaCount; i++){
-            fleaPosList.add(new FleaPos(scanner.nextInt(), scanner.nextInt()));
+
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[i].length; j++){
+                matrix[0][j] = j;
+            }
+            matrix[i][0] = i;
         }
 
-        checkStep(steps.getSteps()[0], matrix, fleaPosList.get(0).getFleaPos());
-
-    }
-
-    public static boolean checkStep(int[] step, int[][] matrix, int[] fleaPos){
-        if(matrix[step[0]][step[1]] > 0){
-            return true;
+        for (int i = 1; i < matrix.length; i++){
+            for (int j = 1; j < matrix[i].length; j++){
+                matrix[i][j] = -1;
+            }
         }
-        return false;
-    }
-}
 
-class HorseStep{
-    public int[][] getSteps() {
-        return steps;
-    }
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[i].length; j++){
+                System.out.print(matrix[i][j]);
+            }
+            System.out.println();
+        }
 
-    private int[][] steps = {
-            {-2, -1},
-            {-2, 1},
-            {-1, -2},
-            {-1, 2},
-            {1, -2},
-            {1, 2},
-            {2, -1},
-            {2, 1}
-    };
-
-    public HorseStep(){
-        this.steps = getSteps();
-    }
-}
-
-class FleaPos {
-    private final int[] fleaPos = new int[2];
-
-    public int[] getFleaPos() {
-        return fleaPos;
-    }
-
-    public FleaPos(int x, int y){
-        fleaPos[0] = x;
-        fleaPos[1] = y;
+        for (int i = 0; i < distances.length; i++){
+            for (int j = 0; j < distances[i].length; j++){
+                System.out.print(distances[i][j]);
+            }
+            System.out.println();
+        }
     }
 }
