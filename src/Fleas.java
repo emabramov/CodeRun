@@ -1,3 +1,5 @@
+import com.sun.jdi.BooleanValue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,35 +26,17 @@ public class Fleas {
         t = scanner.nextInt();
         q = scanner.nextInt();
 
-        int[][] matrix = new int[n + 1][m + 1], distances = new int[n + 1][m + 1], visited = new int[n + 1][m + 1];
+        int[][] matrix = new int[n][m], distances = new int[n][m];
+        boolean[][] visited = new boolean[n][m];
         int[] feedPoint = new int[2];
         feedPoint[0] = s;
         feedPoint[1] = t;
         int fleaCount = q;
-
-        for (int i = 0; i < matrix.length; i++){
-            for (int j = 0; j < matrix[i].length; j++){
-                matrix[0][j] = j;
-            }
-            matrix[i][0] = i;
-        }
-
-        for (int i = 1; i < matrix.length; i++){
-            for (int j = 1; j < matrix[i].length; j++){
-                matrix[i][j] = -1;
-            }
-        }
+        int[][] horseMove = {{-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
 
         for (int i = 0; i < matrix.length; i++){
             for (int j = 0; j < matrix[i].length; j++){
                 System.out.print(matrix[i][j]);
-            }
-            System.out.println();
-        }
-
-        for (int i = 0; i < distances.length; i++){
-            for (int j = 0; j < distances[i].length; j++){
-                System.out.print(distances[i][j]);
             }
             System.out.println();
         }
