@@ -1,26 +1,31 @@
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
 public class Fleas {
-    public static void main(String[] args) throws FileNotFoundException {
+    static final int INF = Integer.MAX_VALUE;
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         int n, m, s, t, q;
         n = scanner.nextInt();
         m = scanner.nextInt();
-        s = scanner.nextInt();
-        t = scanner.nextInt();
+        s = scanner.nextInt() - 1;
+        t = scanner.nextInt() - 1;
         q = scanner.nextInt();
 
-        int[][] matrix = new int[n + 1][m + 1], distances = new int[n + 1][m + 1];
-        boolean[][] visited = new boolean[n + 1][m + 1];
+        if(n <=0 || m <=0 || s <= 0 || t <= 0 || q <= 0){
+            throw new IOException("-1");
+        }
+
+        int[][] matrix = new int[n][m], distances = new int[n][m];
+        boolean[][] visited = new boolean[n][m];
         int fleaCount = q;
         int[][] horseMove = {{-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
         for (int[] distance : distances) {
-            Arrays.fill(distance, -1);
+            Arrays.fill(distance, INF);
         }
 
         Queue<int[]> queue = new LinkedList<>();
@@ -29,10 +34,11 @@ public class Fleas {
         queue.add(new int[]{s, t});
 
         while (!queue.isEmpty()) {
+            if (queue.peek() == null) break;
             int[] coord = queue.poll();
-            for (int i = 0; i < horseMove.length; i++) {
-                int x = horseMove[i][0];
-                int y = horseMove[i][1];
+            for (int[] ints : horseMove) {
+                int x = ints[0];
+                int y = ints[1];
                 if ((coord[0] + x <= 0 || coord[1] + y <= 0) || (coord[0] + x >= matrix.length || coord[1] + y >= matrix.length))
                     continue;
 
@@ -60,23 +66,12 @@ public class Fleas {
         }
     }
 
-
-    // METHODS
-    static int sumOfDistances(int[][] distances) {
-        int sum = 0;
-        for (int i = 1; i < distances.length; i++) {
-            for (int j = 1; j < distances[i].length; j++) {
-                sum += distances[i][j];
-            }
-        }
-        return sum;
-    }
-
+    // METHOD
     static boolean isAllFeed(int[][] distances) {
         boolean isAllFeed = true;
         for (int i = 1; i < distances.length; i++) {
             for (int j = 1; j < distances[i].length; j++) {
-                if (distances[i][j] == -1) {
+                if (distances[i][j] == INF) {
                     isAllFeed = false;
                     break;
                 }
