@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 
 import static java.lang.Math.min;
 

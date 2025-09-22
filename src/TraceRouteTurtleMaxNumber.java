@@ -1,4 +1,3 @@
-import javax.swing.plaf.IconUIResource;
 import java.io.*;
 
 import static java.lang.Math.max;
