@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
 
 public class Fleas {
     static final int INF = Integer.MAX_VALUE;
@@ -16,15 +13,20 @@ public class Fleas {
         t = scanner.nextInt() - 1;
         q = scanner.nextInt();
 
-        if(n < 0 || m < 0 || s < 0 || t < 0 || q < 0){
-            System.out.println("-1");
+        if(n <= 0 || m <= 0 || s < 0 || t < 0 || q <= 0){
+            System.out.println(-1);
             throw new IOException();
         }
 
         int[][] matrix = new int[n][m], distances = new int[n][m];
         boolean[][] visited = new boolean[n][m];
         int fleaCount = q;
-        int[][] horseMove = {{-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
+        int[][] fleaCoordinates = new int[fleaCount][2];
+        for (int i = 0; i < fleaCount; i++) {
+            fleaCoordinates[i][0] = scanner.nextInt();
+            fleaCoordinates[i][1] = scanner.nextInt();
+        }
+        int[][] horseMove = {{-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {-1, 2}, {-2, 1}, {2, 1}, {1, 2}};
         for (int[] distance : distances) {
             Arrays.fill(distance, INF);
         }
@@ -36,55 +38,47 @@ public class Fleas {
 
         while (!queue.isEmpty()) {
             if (queue.peek() == null) break;
-            int[] coord = queue.poll();
+            int[] coordinates = queue.poll();
             for (int[] ints : horseMove) {
                 int x = ints[0];
                 int y = ints[1];
-                if (!isStepExist(coord, ints, matrix)) continue;
+                if (!isStepExist(coordinates, ints, matrix)) continue;
 
-                int newX = coord[0] + x;
-                int newY = coord[1] + y;
+                int newX = x + coordinates[0];
+                int newY = y + coordinates[1];
                 if (!visited[newX][newY]) {
                     queue.add(new int[]{newX, newY});
                     visited[newX][newY] = true;
-                    distances[newX][newY] = distances[coord[0]][coord[1]] + 1;
+                    distances[newX][newY] = distances[coordinates[0]][coordinates[1]] + 1;
                 }
             }
         }
 
-        if (isAllFeed(distances)) {
-            int countSteps = 0;
-            for (int i = 0; i < fleaCount; i++){
-                int[] fleaCoord = new int[2];
-                fleaCoord[0] = scanner.nextInt();
-                fleaCoord[1] = scanner.nextInt();
-                countSteps += distances[fleaCoord[0] -1][fleaCoord[1] - 1];
-            }
-            System.out.println(countSteps);
-        } else {
-            System.out.println(-1);
-        }
+        System.out.println(sumOfSteps(distances, fleaCoordinates));
     }
 
-    // METHOD
-    static boolean isAllFeed(int[][] distances) {
-        boolean isAllFeed = true;
-        for (int i = 1; i < distances.length; i++) {
-            for (int j = 1; j < distances[i].length; j++) {
-                if (distances[i][j] == INF) {
-                    isAllFeed = false;
-                    break;
-                }
+    // METHODS
+    // SUM OF STEPS
+    static int sumOfSteps(int[][] distances, int[][] fleaCoordinates){
+        int result = 0;
+        for (int i = 0; i < fleaCoordinates.length; i++) {
+            int fx = fleaCoordinates[i][0] - 1;
+            int fy = fleaCoordinates[i][1] - 1;
+            if (distances[fx][fy] == INF){
+                result = -1;
+                break;
             }
+            result += distances[fx][fy];
         }
-        return isAllFeed;
+        return result;
     }
 
+    // CHECK NEXT STEP
     static boolean isStepExist(int[] point, int[] step, int[][] area){
         boolean isStepExist = false;
         int nx = point[0] + step[0];
         int ny = point[1] + step[1];
-        if ((nx >= 0 && ny >= 0) && (nx < area.length && ny < area.length)){
+        if ((nx >= 0 && ny >= 0) && (nx < area.length && ny < area[0].length)){
             isStepExist = true;
         }
         return isStepExist;
