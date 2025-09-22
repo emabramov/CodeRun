@@ -16,8 +16,9 @@ public class Fleas {
         t = scanner.nextInt() - 1;
         q = scanner.nextInt();
 
-        if(n <=0 || m <=0 || s <= 0 || t <= 0 || q <= 0){
-            throw new IOException("-1");
+        if(n < 0 || m < 0 || s < 0 || t < 0 || q < 0){
+            System.out.println("-1");
+            throw new IOException();
         }
 
         int[][] matrix = new int[n][m], distances = new int[n][m];
@@ -39,8 +40,7 @@ public class Fleas {
             for (int[] ints : horseMove) {
                 int x = ints[0];
                 int y = ints[1];
-                if ((coord[0] + x <= 0 || coord[1] + y <= 0) || (coord[0] + x >= matrix.length || coord[1] + y >= matrix.length))
-                    continue;
+                if (!isStepExist(coord, ints, matrix)) continue;
 
                 int newX = coord[0] + x;
                 int newY = coord[1] + y;
@@ -58,7 +58,7 @@ public class Fleas {
                 int[] fleaCoord = new int[2];
                 fleaCoord[0] = scanner.nextInt();
                 fleaCoord[1] = scanner.nextInt();
-                countSteps += distances[fleaCoord[0]][fleaCoord[1]];
+                countSteps += distances[fleaCoord[0] -1][fleaCoord[1] - 1];
             }
             System.out.println(countSteps);
         } else {
@@ -78,5 +78,15 @@ public class Fleas {
             }
         }
         return isAllFeed;
+    }
+
+    static boolean isStepExist(int[] point, int[] step, int[][] area){
+        boolean isStepExist = false;
+        int nx = point[0] + step[0];
+        int ny = point[1] + step[1];
+        if ((nx >= 0 && ny >= 0) && (nx < area.length && ny < area.length)){
+            isStepExist = true;
+        }
+        return isStepExist;
     }
 }
